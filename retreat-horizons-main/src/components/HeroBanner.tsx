@@ -1,44 +1,48 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { ArrowDown } from "lucide-react";
-const bannerImages = [{
-  url: "https://images.unsplash.com/photo-1501854140801-50d01698950b",
-  title: "Mountain Hideaway",
-  description: "Breathtaking views and serene moments await you"
-}, {
-  url: "https://images.unsplash.com/photo-1449844908441-8829872d2607",
-  title: "Wood Villa",
-  description: "Forest life stays with a rural experience"
-}, {
-  url: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
-  title: "Desert Oasis",
-  description: "Find peace in the beautiful solitude of nature"
-},
-{
-  url: "https://images.unsplash.com/photo-1484910292437-025e5d13ce87",
-  title: "Hiking",
-  description: "Explore the great outdoors and connect with nature"
-},
-{
-  url: "https://images.unsplash.com/photo-1505843513577-22bb7d21e455",
-  title: "Grand Mansion",
-  description: "Large space and comfort service"
-},
-{
-  url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6",
-  title: "ModernVille",
-  description: "Various Facilities and services"
-},
-{
-  url: "https://images.unsplash.com/photo-1605276373954-0c4a0dac5b12",
-  title: "Country Side",
-  description: "The perfect place for a peaceful retreat"
-},
-{
-  url: "https://images.unsplash.com/photo-1608429835892-30be51ea4d6c",
-  title: "Athlete club",
-  description: "Experience the sports and amenities of a world-class athlete"
-}];
+const bannerImages = [
+  {
+    url: "https://images.unsplash.com/photo-1501854140801-50d01698950b",
+    title: "Mountain Retreat",
+    description: "Escape to the peaks for tranquil moments and breathtaking landscapes."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1449844908441-8829872d2607",
+    title: "Rustic Woodland Villa",
+    description: "Immerse yourself in the charm of nature with a cozy forest stay."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
+    title: "Serene Desert Escape",
+    description: "Unwind amidst the timeless beauty and stillness of the desert."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1484910292437-025e5d13ce87",
+    title: "Adventurous Hiking",
+    description: "Venture into the great outdoors and connect deeply with nature."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1505843513577-22bb7d21e455",
+    title: "Majestic Mansion",
+    description: "Experience grand living with luxurious amenities and expansive spaces."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6",
+    title: "Modern Haven",
+    description: "Delight in contemporary comforts with state-of-the-art facilities."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1605276373954-0c4a0dac5b12",
+    title: "Countryside Bliss",
+    description: "Embrace the serenity and charm of rural landscapes for total relaxation."
+  },
+  {
+    url: "https://images.unsplash.com/photo-1608429835892-30be51ea4d6c",
+    title: "Sportsman's Paradise",
+    description: "Engage in world-class sports and enjoy top-notch facilities."
+  }
+];
 const HeroBanner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [nextIndex, setNextIndex] = useState(1);

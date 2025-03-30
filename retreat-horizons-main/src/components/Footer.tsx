@@ -15,7 +15,7 @@ const Footer = () => {
               <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4 font-['Cormorant_Garamond'] text-white">Community</h3>
             <ul className="space-y-2 font-['Montserrat'] text-sm text-white/90">
@@ -25,7 +25,7 @@ const Footer = () => {
               <li><a href="#" className="hover:text-white transition-colors">Gift cards</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4 font-['Cormorant_Garamond'] text-white">Host</h3>
             <ul className="space-y-2 font-['Montserrat'] text-sm text-white/90">
@@ -35,7 +35,7 @@ const Footer = () => {
               <li><a href="#" className="hover:text-white transition-colors">Resource center</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4 font-['Cormorant_Garamond'] text-white">Support</h3>
             <ul className="space-y-2 font-['Montserrat'] text-sm text-white/90">
@@ -46,10 +46,39 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        
+
         <div className="border-t border-white/20 mt-8 pt-8 flex flex-col md:flex-row justify-between items-center">
           <div className="text-sm text-white/80 mb-4 md:mb-0 font-['Montserrat']">
-            &copy; {new Date().getFullYear()} HorizonStay, Inc. All rights reserved.
+            &copy; {new Date().getFullYear()} HorizonStay, Inc. All rights reserved. (this is a sample project)<br />
+            <div className="flex items-center space-x-4 mt-2">
+              {/* GitHub Icon */}
+              <a
+                href="https://github.com/pranavsinghpatil"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                <i className="fab fa-github text-lg"></i> {/* Using Font Awesome */}
+              </a>
+
+              {/* Twitter Icon */}
+              <a
+                href="https://twitter.com/syntaxnomad"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white"
+              >
+                <i className="fab fa-twitter text-lg"></i>
+              </a>
+
+              {/* Mail Icon */}
+              <a
+                href="mailto:puneet.pranav04@gmail.com"
+                className="hover:text-white"
+              >
+                <i className="fas fa-envelope text-lg"></i>
+              </a>
+            </div>
           </div>
           <div className="flex items-center gap-4 text-sm font-['Montserrat'] text-white/80">
             <a href="#" className="hover:text-white transition-colors">Privacy</a>
@@ -59,7 +88,7 @@ const Footer = () => {
             <a href="#" className="hover:text-white transition-colors">Sitemap</a>
             <span>·</span>
             <div className="flex items-center">
-              Made with <Heart className="h-4 w-4 mx-1 text-white" fill="currentColor" /> in the universe
+              Made with <Heart className="h-4 w-4 mx-1 text-red-500" fill="currentColor" /> in the universe
             </div>
           </div>
         </div>
