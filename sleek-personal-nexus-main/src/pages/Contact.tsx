@@ -125,7 +125,7 @@ const Contact = () => {
                 linkedin.com/in/pranavsinghpatil
               </a>
               <a 
-                href="https://twitter.com/syntaxnomad" 
+                href="https://twitter.com/pranavenv" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center hover:text-primary transition-colors"

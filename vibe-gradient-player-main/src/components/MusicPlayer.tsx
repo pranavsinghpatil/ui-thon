@@ -110,79 +110,85 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   };
 
   return (
-    <div className={`w-full max-w-5xl mx-auto bg-[#210a35]/80 backdrop-blur-lg rounded-xl shadow-2xl relative z-10 ${
-      isPlaying ? 'border-flow-animation border-2' : ''
-    }`}>
-      <div className="flex flex-col md:flex-row">
-        {/* Left side - Player */}
-        <div className="md:w-2/3 p-6 backdrop-blur-md bg-[#210a35]/40 rounded-l-xl">
-          {/* Album cover and track info */}
-          <div className="flex flex-col items-center">
-            <AlbumCover track={currentTrack} size="lg" className="mb-6" />
-            
-            <div className="text-center text-white w-full mb-6">
-              <h2 className="text-2xl font-bold mb-1 truncate font-gradient">{currentTrack.title}</h2>
-              <p className="text-white/70 text-lg">{currentTrack.artist}</p>
-            </div>
-          </div>
-          <audio
-            ref={audioRef}
-            src={currentTrack.audioUrl}
-            preload="metadata"
-            onLoadedMetadata={(e) => {
-              const audio = e.currentTarget;
-              if (audio && !isNaN(audio.duration)) {
-                setCurrentTime(0);
-              }
-            }}
-            onError={(e) => {
-              console.error('Audio error:', e.currentTarget.error);
-            }}
-            className="hidden"
-          />
-          <div className="w-full space-y-5">
-            <ProgressBar 
-              currentTime={currentTime} 
-              duration={currentTrack.duration}
-              onSeek={handleSeek}
-            />
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <PlaybackControls 
-                isPlaying={isPlaying}
-                onPlayPause={handlePlayPause}
-                onPrevious={handlePrevious}
-                onNext={handleNext}
-              />
-              <VolumeControl 
-                volume={volume} 
-                onVolumeChange={handleVolumeChange} 
-              />
-            </div>
-          </div>
-        </div>
-        {/* Right side - Playlist */}
-        <div className="md:w-1/3 p-6 border-l border-white/10">
-          <div className="mb-4">
-            <h3 className="text-white/90 text-lg font-medium mb-3 flex items-center gap-2">
-              <ListMusic size={18} /> <span className="font-gradient">Playlist</span>
-            </h3>
-            <ScrollArea className="h-[410px] pr-4 playlist-scroll">
-              <div className="space-y-2">
-                {tracks.map((track, index) => (
-                  <div 
-                    key={track.id}
-                    onClick={() => handleTrackSelect(index)}
-                    className={`playlist-item flex items-center gap-3 p-3 rounded-lg transition-all duration-300 cursor-pointer ${index === currentTrackIndex ? 'active' : ''}`}
-                  >
-                    <AlbumCover track={track} size="sm" />
-                    <div className="overflow-hidden">
-                      <p className="text-white text-sm font-medium truncate">{track.title}</p>
-                      <p className="text-white/60 text-xs truncate">{track.artist}</p>
-                    </div>
-                  </div>
-                ))}
+    <div className="relative w-full max-w-5xl mx-auto">
+      {/* Blur background effect */}
+      <div className="absolute inset-0 bg-[#210a35]/20 backdrop-blur-3xl rounded-2xl"></div>
+      
+      {/* Main player container */}
+      <div className={`relative w-full bg-[#210a35]/30 backdrop-blur-2xl rounded-2xl shadow-2xl z-10 overflow-hidden ${
+        isPlaying ? 'border-flow-animation' : ''
+      }`}>
+        <div className="flex flex-col md:flex-row">
+          {/* Left side - Player */}
+          <div className="md:w-2/3 p-6 bg-[#210a35]/10 backdrop-blur-lg rounded-2xl">
+            {/* Album cover and track info */}
+            <div className="flex flex-col items-center">
+              <AlbumCover track={currentTrack} size="lg" className="mb-6" />
+              
+              <div className="text-center text-white w-full mb-6">
+                <h2 className="text-2xl font-bold mb-1 truncate font-gradient">{currentTrack.title}</h2>
+                <p className="text-white/70 text-lg">{currentTrack.artist}</p>
               </div>
-            </ScrollArea>
+            </div>
+            <audio
+              ref={audioRef}
+              src={currentTrack.audioUrl}
+              preload="metadata"
+              onLoadedMetadata={(e) => {
+                const audio = e.currentTarget;
+                if (audio && !isNaN(audio.duration)) {
+                  setCurrentTime(0);
+                }
+              }}
+              onError={(e) => {
+                console.error('Audio error:', e.currentTarget.error);
+              }}
+              className="hidden"
+            />
+            <div className="w-full space-y-5">
+              <ProgressBar 
+                currentTime={currentTime} 
+                duration={currentTrack.duration}
+                onSeek={handleSeek}
+              />
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <PlaybackControls 
+                  isPlaying={isPlaying}
+                  onPlayPause={handlePlayPause}
+                  onPrevious={handlePrevious}
+                  onNext={handleNext}
+                />
+                <VolumeControl 
+                  volume={volume} 
+                  onVolumeChange={handleVolumeChange} 
+                />
+              </div>
+            </div>
+          </div>
+          {/* Right side - Playlist */}
+          <div className="md:w-1/3 p-6 border-l border-white/10">
+            <div className="mb-4">
+              <h3 className="text-white/90 text-lg font-medium mb-3 flex items-center gap-2">
+                <ListMusic size={18} /> <span className="font-gradient">Playlist</span>
+              </h3>
+              <ScrollArea className="h-[410px] pr-4 playlist-scroll">
+                <div className="space-y-2">
+                  {tracks.map((track, index) => (
+                    <div 
+                      key={track.id}
+                      onClick={() => handleTrackSelect(index)}
+                      className={`playlist-item flex items-center gap-3 p-3 rounded-lg transition-all duration-300 cursor-pointer ${index === currentTrackIndex ? 'active' : ''}`}
+                    >
+                      <AlbumCover track={track} size="sm" />
+                      <div className="overflow-hidden">
+                        <p className="text-white text-sm font-medium truncate">{track.title}</p>
+                        <p className="text-white/60 text-xs truncate">{track.artist}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </ScrollArea>
+            </div>
           </div>
         </div>
       </div>

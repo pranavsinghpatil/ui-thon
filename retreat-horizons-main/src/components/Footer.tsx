@@ -63,7 +63,7 @@ const Footer = () => {
 
               {/* Twitter Icon */}
               <a
-                href="https://twitter.com/syntaxnomad"
+                href="https://twitter.com/pranavenv"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white"

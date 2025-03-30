@@ -1,4 +1,3 @@
-
 import React from 'react';
 import MusicPlayer from '@/components/MusicPlayer';
 import MusicIconsAnimation from '@/components/MusicIconsAnimation';
@@ -18,15 +17,15 @@ const Index = () => {
 
       <div className="mt-10 text-white/50 text-sm text-center">
         <p>&copy; {new Date().getFullYear()} PranavSingh. All rights reserved.</p>
-        <div className="flex justify-center space-x-4 mt-2">
+        <div className="flex justify-center space-x-6 mt-4">
           {/* GitHub Icon */}
           <a
             href="https://github.com/pranavsinghpatil"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white"
+            className="hover:text-white transition-colors duration-300 text-2xl"
           >
-            <i className="fab fa-github text-lg"></i> {/* Font Awesome GitHub Icon */}
+            <i className="fab fa-github"></i>
           </a>
 
           {/* Twitter Icon */}
@@ -34,9 +33,9 @@ const Index = () => {
             href="https://twitter.com/pranavenv"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:text-white"
+            className="hover:text-white transition-colors duration-300 text-2xl"
           >
-            <i className="fab fa-twitter text-lg"></i> {/* Font Awesome Twitter Icon */}
+            <i className="fab fa-x-twitter"></i>
           </a>
         </div>
       </div>
