@@ -1,0 +1,182 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap');
+
+@layer base {
+  :root {
+    --background: 30 33% 98%;
+    --foreground: 20 40% 20%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 40% 20%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 40% 20%;
+
+    --primary: 25 60% 34%;
+    --primary-foreground: 30 33% 98%;
+
+    --secondary: 350 25% 74%;
+    --secondary-foreground: 20 40% 20%;
+
+    --muted: 30 10% 96%;
+    --muted-foreground: 20 40% 60%;
+
+    --accent: 30 10% 96%;
+    --accent-foreground: 20 40% 20%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 20 10% 90%;
+    --input: 20 10% 90%;
+    --ring: 25 60% 34%;
+
+    --radius: 1rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 20 40% 10%;
+    --foreground: 30 33% 98%;
+
+    --card: 20 40% 15%;
+    --card-foreground: 30 33% 98%;
+
+    --popover: 20 40% 15%;
+    --popover-foreground: 30 33% 98%;
+
+    --primary: 25 60% 50%;
+    --primary-foreground: 30 33% 98%;
+
+    --secondary: 350 25% 45%;
+    --secondary-foreground: 30 33% 98%;
+
+    --muted: 20 40% 20%;
+    --muted-foreground: 20 40% 70%;
+
+    --accent: 20 40% 20%;
+    --accent-foreground: 30 33% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 30 33% 98%;
+
+    --border: 20 40% 25%;
+    --input: 20 40% 25%;
+    --ring: 25 60% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Poppins', sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
+  }
+}
+
+@layer components {
+  .listing-card {
+    @apply relative overflow-hidden bg-card rounded-2xl shadow-md transition-all duration-300 hover:shadow-xl;
+  }
+  
+  .listing-card:hover .listing-image {
+    @apply scale-105;
+  }
+  
+  .listing-card:hover .availability {
+    @apply ring-2 ring-earthy-gold;
+  }
+  
+  .listing-image {
+    @apply w-full h-48 object-cover transition-transform duration-500;
+  }
+  
+  .availability {
+    @apply absolute bottom-4 right-4 px-3 py-1 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium transition-all duration-300;
+  }
+  
+  .filter-toggle {
+    @apply relative h-6 w-12 cursor-pointer rounded-full bg-muted transition-colors duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+  }
+  
+  .filter-toggle[data-state="checked"] {
+    @apply bg-gradient-to-r from-earthy-brown to-earthy-dark;
+  }
+  
+  .filter-toggle-thumb {
+    @apply block h-5 w-5 rounded-full bg-white shadow-lg ring-0 transition-transform duration-300;
+  }
+  
+  .filter-toggle[data-state="checked"] .filter-toggle-thumb {
+    @apply translate-x-6;
+  }
+
+  .price-slider-track {
+    @apply h-2 bg-muted rounded-full relative;
+  }
+  
+  .price-slider-range {
+    @apply absolute h-2 bg-gradient-to-r from-earthy-brown to-earthy-dark rounded-full;
+  }
+  
+  .price-slider-thumb {
+    @apply h-5 w-5 bg-white rounded-full shadow-md border-2 border-earthy-brown focus:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+  }
+  
+  .map-pin {
+    @apply w-6 h-6 bg-earthy-brown rounded-full flex items-center justify-center text-white relative;
+  }
+  
+  .map-pin::after {
+    content: '';
+    @apply absolute w-12 h-12 bg-earthy-brown/20 rounded-full -z-10 animate-ripple;
+  }
+  
+  .map-preview {
+    @apply absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 bg-white p-2 rounded-md shadow-lg transform origin-bottom scale-0 transition-transform duration-200;
+  }
+  
+  .map-pin:hover .map-preview {
+    @apply scale-100;
+  }
+  
+  .flicker-icon {
+    @apply animate-flicker;
+  }
+
+  .confetti-piece {
+    @apply absolute w-2 h-2 bg-earthy-gold rounded-sm animate-confetti;
+  }
+  
+  .text-gradient-brand {
+    @apply bg-gradient-to-r from-earthy-brown to-earthy-dark bg-clip-text text-transparent;
+  }
+  
+  .card-gradient {
+    @apply bg-gradient-to-br from-white to-earthy-light/50 backdrop-blur-sm;
+  }
+  
+  .button-gradient {
+    @apply bg-gradient-to-r from-earthy-brown to-earthy-dark hover:from-earthy-dark hover:to-earthy-brown;
+  }
+}
+
