@@ -111,9 +111,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
 
   return (
     <div className="relative w-full max-w-5xl mx-auto">
-      <div className={`relative w-full rounded-2xl shadow-2xl overflow-hidden ${
-        isPlaying ? 'border-flow-animation' : ''
-      }`}>
+      <div className={`w-full shadow-2xl rounded-2xl overflow-hidden ${isPlaying ? 'border-flow-animation' : ''}`}>
         <div className="flex flex-col md:flex-row">
           {/* Left side - Player */}
           <div className="md:w-2/3 p-6">

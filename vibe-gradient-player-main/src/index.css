@@ -135,48 +135,50 @@
 
 @keyframes border-flow {
   0% {
-    transform: rotate(0deg);
+    background-position: 0% 0%;
   }
   100% {
-    transform: rotate(360deg);
+    background-position: 200% 0%;
   }
 }
 
 .border-flow-animation {
   position: relative;
   border-radius: 1rem;
-  z-index: 1;
+  background: #210a35;
+  overflow: hidden;
 }
 
-.border-flow-animation::before,
-.border-flow-animation::after {
-  content: '';
+.border-flow-animation::before {
+  content: "";
   position: absolute;
-  inset: -4px;
-  background: conic-gradient(
-    from 0deg,
-    #9b87f5,
-    #4158D0,
-    #9333ea,
-    #c026d3,
-    #9b87f5
+  inset: -3px;
+  background: linear-gradient(
+    90deg,
+    #ff0099,
+    #00ff99,
+    #00ffff,
+    #ff0099
   );
-  border-radius: inherit;
-  animation: border-flow 4s linear infinite;
+  background-size: 200% 100%;
+  border-radius: 1rem;
+  animation: border-flow 3s linear infinite;
   z-index: -1;
 }
 
 .border-flow-animation::after {
-  filter: blur(12px);
-  opacity: 0.4;
-  inset: -6px;
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: inherit;
+  border-radius: calc(1rem - 2px);
+  z-index: 0;
 }
 
-.border-flow-animation > div:first-child {
-  background: rgba(33, 10, 53, 0.8);
-  border-radius: inherit;
+.border-flow-animation > * {
   position: relative;
-  z-index: 2;
+  z-index: 1;
+  border-radius: inherit;
 }
 
 .music-player-bg {
