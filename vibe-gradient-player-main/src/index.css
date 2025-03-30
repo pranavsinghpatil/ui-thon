@@ -304,3 +304,75 @@
   background-color: rgba(255, 255, 255, 0.3);
   border-radius: 10px;
 }
+
+/* Volume Slider Styling */
+.volume-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+}
+
+.volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #4158D0;
+  box-shadow: 0 0 10px rgba(65, 88, 208, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.volume-slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  border: 2px solid #4158D0;
+  box-shadow: 0 0 10px rgba(65, 88, 208, 0.5);
+  position: relative;
+  z-index: 2;
+}
+
+.volume-slider::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: var(--volume-percentage);
+  background: linear-gradient(90deg, #4158D0, #ff3399);
+  border-radius: 2px;
+  transition: width 0.2s ease;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 20px;
+  backdrop-filter: blur(5px);
+  transition: all 0.3s ease;
+}
+
+.volume-control:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.volume-icon {
+  color: rgba(255, 255, 255, 0.7);
+  transition: color 0.3s ease;
+}
+
+.volume-control:hover .volume-icon {
+  color: rgba(255, 255, 255, 0.9);
+}

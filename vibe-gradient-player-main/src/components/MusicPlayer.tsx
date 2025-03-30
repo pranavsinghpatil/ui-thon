@@ -14,75 +14,140 @@ interface MusicPlayerProps {
 const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
-  const [volume, setVolume] = useState(0.7);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState('none'); // 'none', 'all', 'one'
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentTrack = tracks[currentTrackIndex];
+
+  const getNextTrackIndex = () => {
+    if (repeat === 'one') return currentTrackIndex;
+    if (shuffle) {
+      const nextIndex = Math.floor(Math.random() * tracks.length);
+      return nextIndex === currentTrackIndex ? (nextIndex + 1) % tracks.length : nextIndex;
+    }
+    return (currentTrackIndex + 1) % tracks.length;
+  };
+
+  const getPreviousTrackIndex = () => {
+    if (repeat === 'one') return currentTrackIndex;
+    if (shuffle) {
+      const prevIndex = Math.floor(Math.random() * tracks.length);
+      return prevIndex === currentTrackIndex ? (prevIndex - 1 + tracks.length) % tracks.length : prevIndex;
+    }
+    return (currentTrackIndex - 1 + tracks.length) % tracks.length;
+  };
+
+  const handleNext = () => {
+    const nextIndex = getNextTrackIndex();
+    setCurrentTrackIndex(nextIndex);
+    setCurrentTime(0);
+    if (isPlaying) {
+      setTimeout(() => audioRef.current?.play(), 0);
+    }
+  };
+
+  const handlePrevious = () => {
+    const prevIndex = getPreviousTrackIndex();
+    setCurrentTrackIndex(prevIndex);
+    setCurrentTime(0);
+    if (isPlaying) {
+      setTimeout(() => audioRef.current?.play(), 0);
+    }
+  };
+
+  const toggleShuffle = () => {
+    setShuffle(prev => !prev);
+  };
+
+  const toggleRepeat = () => {
+    setRepeat(current => {
+      switch (current) {
+        case 'none': return 'all';
+        case 'all': return 'one';
+        default: return 'none';
+      }
+    });
+  };
 
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
       audio.volume = volume;
-      audio.src = currentTrack.audioUrl;
-      audio.load(); // Explicitly load the audio
-      
+
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+      };
+
+      const handleLoadedMetadata = () => {
+        if (!isNaN(audio.duration)) {
+          setCurrentTime(0);
+        }
+      };
+
+      const handleEnded = () => {
+        if (repeat === 'one') {
+          audio.currentTime = 0;
+          audio.play();
+        } else if (repeat === 'all' || shuffle) {
+          handleNext();
+        } else {
+          if (currentTrackIndex === tracks.length - 1) {
+            setIsPlaying(false);
+            setCurrentTime(0);
+          } else {
+            handleNext();
+          }
+        }
+      };
+
+      const handleError = (error: Event) => {
+        console.error('Audio error:', (error.target as HTMLAudioElement).error);
+        setIsPlaying(false);
+      };
+
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.addEventListener('ended', handleEnded);
+      audio.addEventListener('error', handleError);
+
       if (isPlaying) {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch(error => {
-            console.error('Error playing audio:', error);
+            console.error('Playback error:', error);
             setIsPlaying(false);
           });
         }
       } else {
         audio.pause();
       }
-    }
-  }, [currentTrackIndex, isPlaying, volume, currentTrack.audioUrl]);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      // Set up event listeners
-      audio.addEventListener('timeupdate', () => {
-        setCurrentTime(audio.currentTime);
-      });
-
-      audio.addEventListener('ended', () => {
-        handleNext();
-      });
-
-      audio.addEventListener('error', (error) => {
-        console.error('Audio playback error:', error);
-      });
-
-      // Clean up event listeners
       return () => {
-        audio.removeEventListener('timeupdate', () => {});
-        audio.removeEventListener('ended', () => {});
-        audio.removeEventListener('error', () => {});
+        audio.removeEventListener('timeupdate', handleTimeUpdate);
+        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+        audio.removeEventListener('ended', handleEnded);
+        audio.removeEventListener('error', handleError);
       };
     }
-  }, []);
+  }, [currentTrackIndex, isPlaying, volume, repeat, shuffle]);
 
   const handlePlayPause = () => {
-    setIsPlaying(!isPlaying);
-  };
-
-  const handlePrevious = () => {
-    setCurrentTrackIndex((prevIndex) => 
-      prevIndex === 0 ? tracks.length - 1 : prevIndex - 1
-    );
-    setCurrentTime(0);
-    if (!isPlaying) setIsPlaying(true);
-  };
-
-  const handleNext = () => {
-    setCurrentTrackIndex((prevIndex) => 
-      prevIndex === tracks.length - 1 ? 0 : prevIndex + 1
-    );
-    setCurrentTime(0);
-    if (!isPlaying) setIsPlaying(true);
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+      } else {
+        const playPromise = audioRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error('Playback error:', error);
+            setIsPlaying(false);
+          });
+        }
+      }
+      setIsPlaying(!isPlaying);
+    }
   };
 
   const handleSeek = (time: number) => {
@@ -105,7 +170,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
     } else {
       setCurrentTrackIndex(index);
       setCurrentTime(0);
-      if (!isPlaying) setIsPlaying(true);
+      setIsPlaying(true);
     }
   };
 
@@ -145,17 +210,57 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
                 duration={currentTrack.duration}
                 onSeek={handleSeek}
               />
-              <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex items-center justify-center gap-8 mb-6">
+                <button 
+                  onClick={toggleShuffle}
+                  className={`text-2xl transition-colors ${shuffle ? 'text-purple-500' : 'text-white/70 hover:text-white'}`}
+                >
+                  <i className="fas fa-random"></i>
+                </button>
                 <PlaybackControls 
                   isPlaying={isPlaying}
                   onPlayPause={handlePlayPause}
                   onPrevious={handlePrevious}
                   onNext={handleNext}
                 />
-                <VolumeControl 
-                  volume={volume} 
-                  onVolumeChange={handleVolumeChange} 
-                />
+                <button 
+                  onClick={toggleRepeat}
+                  className={`text-2xl transition-colors ${
+                    repeat !== 'none' ? 'text-purple-500' : 'text-white/70 hover:text-white'
+                  }`}
+                >
+                  {repeat === 'one' ? (
+                    <i className="fas fa-repeat-1"></i>
+                  ) : (
+                    <i className="fas fa-repeat"></i>
+                  )}
+                </button>
+              </div>
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="volume-control">
+                  <button
+                    onClick={() => handleVolumeChange(volume === 0 ? 1 : 0)}
+                    className="volume-icon"
+                  >
+                    {volume === 0 ? (
+                      <i className="fas fa-volume-mute"></i>
+                    ) : volume < 0.5 ? (
+                      <i className="fas fa-volume-down"></i>
+                    ) : (
+                      <i className="fas fa-volume-up"></i>
+                    )}
+                  </button>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
+                    className="volume-slider"
+                    style={{ '--volume-percentage': `${volume * 100}%` } as React.CSSProperties}
+                  />
+                </div>
               </div>
             </div>
           </div>
