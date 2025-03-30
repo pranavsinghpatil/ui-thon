@@ -24,16 +24,21 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
     if (audio) {
       audio.volume = volume;
       audio.src = currentTrack.audioUrl;
+      audio.load(); // Explicitly load the audio
       
       if (isPlaying) {
-        audio.play().catch(error => {
-          console.error('Error playing audio:', error);
-        });
+        const playPromise = audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            console.error('Error playing audio:', error);
+            setIsPlaying(false);
+          });
+        }
       } else {
         audio.pause();
       }
     }
-  }, [currentTrackIndex, isPlaying, volume]);
+  }, [currentTrackIndex, isPlaying, volume, currentTrack.audioUrl]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -121,7 +126,16 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
           <audio
             ref={audioRef}
             src={currentTrack.audioUrl}
-            preload="auto"
+            preload="metadata"
+            onLoadedMetadata={(e) => {
+              const audio = e.currentTarget;
+              if (audio && !isNaN(audio.duration)) {
+                setCurrentTime(0);
+              }
+            }}
+            onError={(e) => {
+              console.error('Audio error:', e.currentTarget.error);
+            }}
             className="hidden"
           />
           <div className="w-full space-y-5">

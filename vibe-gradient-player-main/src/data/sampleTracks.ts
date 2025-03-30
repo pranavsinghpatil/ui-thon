@@ -1,4 +1,3 @@
-
 export interface Track {
   id: string;
   title: string;
@@ -10,7 +9,7 @@ export interface Track {
 }
 
 const getAudioUrl = (fileName: string): string => {
-  return new URL(`../audio/${fileName}`, import.meta.url).toString();
+  return `/audio/${fileName}`;
 };
 // Culture Code - Make Me Move (feat. Karra) _ Dance Pop _ NCS - Copyright Free Music 4
 export const sampleTracks: Track[] = [
@@ -52,11 +51,11 @@ export const sampleTracks: Track[] = [
   },
   {
     id: "5",
-    title: "Feed Good",
+    title: "Feel Good",
     artist: "Syn Cole",
     album: "NoCopyrightSounds",
     coverUrl: "https://images.unsplash.com/photo-1723924995430-b74c76bbcdfd",
-    audioUrl: getAudioUrl("Feed Good.mp3"),
+    audioUrl: getAudioUrl("Syn Cole - Feel Good.mp3"),
     duration: 182
   },
   {
@@ -64,7 +63,7 @@ export const sampleTracks: Track[] = [
     title: "Glitch Hop",
     artist: "Tech Beats",
     album: "Future Sounds",
-    coverUrl: "https://images.unsplash.com/photo-1515405295579-ba7b45403062",
+    coverUrl: "https://images.unsplash.com/photo-1515405295579-b74c76bbcdfd",
     audioUrl: getAudioUrl("Glitch Hop.mp3"),
     duration: 273
   },
@@ -76,14 +75,5 @@ export const sampleTracks: Track[] = [
     coverUrl: "https://images.unsplash.com/photo-1439902315629-cd882022cea0",
     audioUrl: getAudioUrl("Flute Music.mp3"),
     duration: 151
-  },
-  {
-    id: "8",
-    title: "Digital Horizon",
-    artist: "Tech Beats",
-    album: "Future Sounds",
-    coverUrl: "https://images.unsplash.com/photo-1462331940025-496dfbfc7564",
-    audioUrl: getAudioUrl("Liquid Time.mp3"),
-    duration: 139
   }
 ];
