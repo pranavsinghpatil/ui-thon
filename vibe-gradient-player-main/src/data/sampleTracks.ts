@@ -14,7 +14,16 @@ const getAudioUrl = (fileName: string): string => {
 // Culture Code - Make Me Move (feat. Karra) _ Dance Pop _ NCS - Copyright Free Music 4
 export const sampleTracks: Track[] = [
   {
-    id: "1",
+    id: "3",
+    title: "Make Me Move",
+    artist: "Culture Code",
+    album: "NCS",
+    coverUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+    audioUrl: getAudioUrl("Make Me Move.mp3"),
+    duration: 196
+  },
+  {
+    id: "2",
     title: "Flute Music",
     artist: "Nature Recordings",
     album: "Serene Landscapes",
@@ -23,22 +32,13 @@ export const sampleTracks: Track[] = [
     duration: 151
   },
   {
-    id: "2",
+    id: "3",
     title: "Hang Drums",
     artist: "Synth Wave",
     album: "Synth Vibes",
     coverUrl: "https://images.unsplash.com/photo-1470813740244-df37b8c1edcb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
     audioUrl: getAudioUrl("H-D.mp3"),
     duration: 139
-  },
-  {
-    id: "3",
-    title: "Make Me Move",
-    artist: "Culture Code",
-    album: "NCS",
-    coverUrl: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-    audioUrl: getAudioUrl("Make Me Move.mp3"),
-    duration: 196
   },
   {
     id: "4",

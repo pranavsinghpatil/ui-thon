@@ -111,16 +111,12 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
 
   return (
     <div className="relative w-full max-w-5xl mx-auto">
-      {/* Blur background effect */}
-      <div className="absolute inset-0 bg-[#210a35]/20 backdrop-blur-3xl rounded-2xl"></div>
-      
-      {/* Main player container */}
-      <div className={`relative w-full bg-[#210a35]/30 backdrop-blur-2xl rounded-2xl shadow-2xl z-10 overflow-hidden ${
+      <div className={`relative w-full rounded-2xl shadow-2xl overflow-hidden ${
         isPlaying ? 'border-flow-animation' : ''
       }`}>
         <div className="flex flex-col md:flex-row">
           {/* Left side - Player */}
-          <div className="md:w-2/3 p-6 bg-[#210a35]/10 backdrop-blur-lg rounded-2xl">
+          <div className="md:w-2/3 p-6">
             {/* Album cover and track info */}
             <div className="flex flex-col items-center">
               <AlbumCover track={currentTrack} size="lg" className="mb-6" />

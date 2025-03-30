@@ -135,40 +135,48 @@
 
 @keyframes border-flow {
   0% {
-    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff) 1;
-    border-radius: 1rem;
-  }
-  50% {
-    border-image: linear-gradient(225deg, #00ffff, #ff00ff, #00ffff) 1;
-    border-radius: 1rem;
+    transform: rotate(0deg);
   }
   100% {
-    border-image: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff) 1;
-    border-radius: 1rem;
+    transform: rotate(360deg);
   }
 }
 
 .border-flow-animation {
   position: relative;
+  border-radius: 1rem;
+  z-index: 1;
 }
 
-.border-flow-animation::before {
+.border-flow-animation::before,
+.border-flow-animation::after {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 1rem;
-  padding: 3px;
-  background: linear-gradient(45deg, #ff00ff, #00ffff, #ff00ff);
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: border-flow 3s ease-in-out infinite;
-  pointer-events: none;
+  inset: -4px;
+  background: conic-gradient(
+    from 0deg,
+    #9b87f5,
+    #4158D0,
+    #9333ea,
+    #c026d3,
+    #9b87f5
+  );
+  border-radius: inherit;
+  animation: border-flow 4s linear infinite;
+  z-index: -1;
+}
+
+.border-flow-animation::after {
+  filter: blur(12px);
+  opacity: 0.4;
+  inset: -6px;
+}
+
+.border-flow-animation > div:first-child {
+  background: rgba(33, 10, 53, 0.8);
+  border-radius: inherit;
+  position: relative;
+  z-index: 2;
 }
 
 .music-player-bg {
@@ -181,40 +189,6 @@
   animation: gradient-shift 15s ease infinite;
   border: 1px solid rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
-}
-
-.border-flow-animation {
-  position: relative;
-}
-
-.border-flow-animation::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 0.75rem; /* rounded-xl */
-  padding: 2px;
-  background: linear-gradient(
-    90deg, 
-    #9b87f5, 
-    #4158D0, 
-    #9333ea, 
-    #c026d3, 
-    #9b87f5
-  );
-  background-size: 300% 100%;
-  animation: border-flow 8s linear infinite;
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-  z-index: -1;
-}
-
-.animated-gradient {
-  background-size: 300% 300%;
-  animation: gradient-shift 20s ease infinite;
 }
 
 .bg-grid {
