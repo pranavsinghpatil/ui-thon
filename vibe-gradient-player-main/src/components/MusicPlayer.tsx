@@ -20,14 +20,17 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   const currentTrack = tracks[currentTrackIndex];
 
   useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-      audioRef.current.src = currentTrack.audioUrl;
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = volume;
+      audio.src = currentTrack.audioUrl;
       
       if (isPlaying) {
-        audioRef.current.play();
+        audio.play().catch(error => {
+          console.error('Error playing audio:', error);
+        });
       } else {
-        audioRef.current.pause();
+        audio.pause();
       }
     }
   }, [currentTrackIndex, isPlaying, volume]);
@@ -35,6 +38,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
+      // Set up event listeners
       audio.addEventListener('timeupdate', () => {
         setCurrentTime(audio.currentTime);
       });
@@ -47,6 +51,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
         console.error('Audio playback error:', error);
       });
 
+      // Clean up event listeners
       return () => {
         audio.removeEventListener('timeupdate', () => {});
         audio.removeEventListener('ended', () => {});
@@ -78,6 +83,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   const handleSeek = (time: number) => {
     if (audioRef.current) {
       audioRef.current.currentTime = time;
+      setCurrentTime(time);
     }
   };
 
