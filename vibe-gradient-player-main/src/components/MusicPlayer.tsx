@@ -1,123 +1,98 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Track } from '@/data/sampleTracks';
+import React, { useRef, useState, useEffect } from 'react';
+import type { Track } from '../types/track';
 import AlbumCover from './AlbumCover';
 import PlaybackControls from './PlaybackControls';
 import ProgressBar from './ProgressBar';
 import VolumeControl from './VolumeControl';
-import { Music, ListMusic, Shuffle, Repeat, RepeatOne } from 'lucide-react';
+import { ListMusic } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 
 interface MusicPlayerProps {
   tracks: Track[];
 }
 
-const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
+export default function MusicPlayer({ tracks }: MusicPlayerProps) {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [isShuffling, setIsShuffling] = useState(false);
+  const [volume, setVolume] = useState(0.7);
+  const [isShuffleOn, setIsShuffleOn] = useState(false);
   const [repeatMode, setRepeatMode] = useState<'none' | 'all' | 'one'>('none');
-  
   const audioRef = useRef<HTMLAudioElement>(null);
+  const [shuffledIndices, setShuffledIndices] = useState<number[]>([]);
+
   const currentTrack = tracks[currentTrackIndex];
 
   useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.volume = volume;
-      audio.src = currentTrack.audioUrl;
-      audio.load(); // Explicitly load the audio
-      
-      if (isPlaying) {
-        const playPromise = audio.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.error('Error playing audio:', error);
-            setIsPlaying(false);
-          });
-        }
-      } else {
-        audio.pause();
+    const timer = setInterval(() => {
+      if (audioRef.current && !audioRef.current.paused) {
+        setCurrentTime(audioRef.current.currentTime);
       }
-    }
-  }, [currentTrackIndex, isPlaying, volume, currentTrack.audioUrl]);
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   useEffect(() => {
     if (audioRef.current) {
-      const audio = audioRef.current;
-      
-      const handleTimeUpdate = () => {
-        setCurrentTime(audio.currentTime);
-      };
-
-      const handleEnded = () => {
-        if (repeatMode === 'one') {
-          audio.currentTime = 0;
-          audio.play();
-        } else if (repeatMode === 'all') {
-          handleNext();
-        } else if (isShuffling) {
-          handleShuffle();
-        } else {
-          handleNext();
-        }
-      };
-
-      audio.addEventListener('timeupdate', handleTimeUpdate);
-      audio.addEventListener('ended', handleEnded);
-
-      return () => {
-        audio.removeEventListener('timeupdate', handleTimeUpdate);
-        audio.removeEventListener('ended', handleEnded);
-      };
+      audioRef.current.volume = volume;
+      if (isPlaying) {
+        audioRef.current.play().catch(console.error);
+      } else {
+        audioRef.current.pause();
+      }
     }
-  }, [currentTrackIndex, isShuffling, repeatMode]);
+  }, [isPlaying, currentTrackIndex, volume]);
 
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
 
-  const handleShuffle = () => {
-    let nextIndex;
-    do {
-      nextIndex = Math.floor(Math.random() * tracks.length);
-    } while (nextIndex === currentTrackIndex && tracks.length > 1);
-    
-    setCurrentTrackIndex(nextIndex);
-    setCurrentTime(0);
-    if (isPlaying && audioRef.current) {
-      audioRef.current.play();
+  const handleEnded = () => {
+    if (repeatMode === 'one') {
+      if (audioRef.current) {
+        audioRef.current.currentTime = 0;
+        audioRef.current.play().catch(console.error);
+      }
+    } else {
+      handleNext();
     }
   };
 
-  const handleRepeat = () => {
-    setRepeatMode(current => {
-      switch (current) {
-        case 'none': return 'all';
-        case 'all': return 'one';
-        case 'one': return 'none';
+  const getNextTrackIndex = () => {
+    if (isShuffleOn) {
+      if (shuffledIndices.length === 0) {
+        const indices = Array.from({ length: tracks.length }, (_, i) => i)
+          .filter(i => i !== currentTrackIndex);
+        const shuffled = indices.sort(() => Math.random() - 0.5);
+        setShuffledIndices(shuffled);
+        return shuffled[0];
       }
-    });
+      const nextIndex = shuffledIndices[0];
+      setShuffledIndices(shuffledIndices.slice(1));
+      return nextIndex;
+    }
+
+    if (currentTrackIndex === tracks.length - 1) {
+      return repeatMode === 'all' ? 0 : currentTrackIndex;
+    }
+    return currentTrackIndex + 1;
   };
 
   const handleNext = () => {
-    if (isShuffling) {
-      handleShuffle();
-    } else {
-      setCurrentTrackIndex(current => 
-        current === tracks.length - 1 ? (repeatMode === 'all' ? 0 : current) : current + 1
-      );
+    const nextIndex = getNextTrackIndex();
+    if (nextIndex !== currentTrackIndex) {
+      setCurrentTrackIndex(nextIndex);
       setCurrentTime(0);
+      if (!isPlaying) setIsPlaying(true);
     }
   };
 
   const handlePrevious = () => {
-    if (isShuffling) {
-      handleShuffle();
-    } else {
-      setCurrentTrackIndex(current => current === 0 ? tracks.length - 1 : current - 1);
+    if (currentTrackIndex > 0) {
+      setCurrentTrackIndex(currentTrackIndex - 1);
       setCurrentTime(0);
+      if (!isPlaying) setIsPlaying(true);
     }
   };
 
@@ -135,14 +110,15 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
     }
   };
 
-  const handleTrackSelect = (index: number) => {
-    if (currentTrackIndex === index) {
-      handlePlayPause();
-    } else {
-      setCurrentTrackIndex(index);
-      setCurrentTime(0);
-      if (!isPlaying) setIsPlaying(true);
-    }
+  const toggleShuffle = () => {
+    setIsShuffleOn(!isShuffleOn);
+    setShuffledIndices([]);
+  };
+
+  const toggleRepeat = () => {
+    const modes: ('none' | 'all' | 'one')[] = ['none', 'all', 'one'];
+    const currentIndex = modes.indexOf(repeatMode);
+    setRepeatMode(modes[(currentIndex + 1) % modes.length]);
   };
 
   return (
@@ -164,12 +140,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
               ref={audioRef}
               src={currentTrack.audioUrl}
               preload="metadata"
-              onLoadedMetadata={(e) => {
-                const audio = e.currentTarget;
-                if (audio && !isNaN(audio.duration)) {
-                  setCurrentTime(0);
-                }
-              }}
+              onEnded={handleEnded}
               onError={(e) => {
                 console.error('Audio error:', e.currentTarget.error);
               }}
@@ -182,33 +153,16 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
                 onSeek={handleSeek}
               />
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <button 
-                    onClick={() => setIsShuffling(prev => !prev)}
-                    className={`p-2 rounded-full transition-all ${
-                      isShuffling ? 'text-purple-400 hover:text-purple-300' : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    <Shuffle size={20} />
-                  </button>
-                  
-                  <PlaybackControls 
-                    isPlaying={isPlaying}
-                    onPlayPause={handlePlayPause}
-                    onPrevious={handlePrevious}
-                    onNext={handleNext}
-                  />
-                  
-                  <button 
-                    onClick={handleRepeat}
-                    className={`p-2 rounded-full transition-all ${
-                      repeatMode !== 'none' ? 'text-purple-400 hover:text-purple-300' : 'text-white/70 hover:text-white'
-                    }`}
-                  >
-                    {repeatMode === 'one' ? <RepeatOne size={20} /> : <Repeat size={20} />}
-                  </button>
-                </div>
-
+                <PlaybackControls 
+                  isPlaying={isPlaying}
+                  onPlayPause={handlePlayPause}
+                  onPrevious={handlePrevious}
+                  onNext={handleNext}
+                  onShuffle={toggleShuffle}
+                  onRepeat={toggleRepeat}
+                  isShuffleOn={isShuffleOn}
+                  repeatMode={repeatMode}
+                />
                 <VolumeControl 
                   volume={volume} 
                   onVolumeChange={handleVolumeChange} 
@@ -227,7 +181,15 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
                   {tracks.map((track, index) => (
                     <div 
                       key={track.id}
-                      onClick={() => handleTrackSelect(index)}
+                      onClick={() => {
+                        if (currentTrackIndex === index) {
+                          handlePlayPause();
+                        } else {
+                          setCurrentTrackIndex(index);
+                          setCurrentTime(0);
+                          if (!isPlaying) setIsPlaying(true);
+                        }
+                      }}
                       className={`playlist-item flex items-center gap-3 p-3 rounded-lg transition-all duration-300 cursor-pointer ${index === currentTrackIndex ? 'active' : ''}`}
                     >
                       <AlbumCover track={track} size="sm" />
@@ -246,5 +208,3 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
     </div>
   );
 };
-
-export default MusicPlayer;
