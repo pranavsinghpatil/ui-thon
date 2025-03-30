@@ -4,7 +4,7 @@ import AlbumCover from './AlbumCover';
 import PlaybackControls from './PlaybackControls';
 import ProgressBar from './ProgressBar';
 import VolumeControl from './VolumeControl';
-import { Music, ListMusic } from 'lucide-react';
+import { Music, ListMusic, Shuffle, Repeat, RepeatOne } from 'lucide-react';
 import { ScrollArea } from './ui/scroll-area';
 
 interface MusicPlayerProps {
@@ -14,139 +14,110 @@ interface MusicPlayerProps {
 const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [volume, setVolume] = useState(1);
   const [currentTime, setCurrentTime] = useState(0);
-  const [shuffle, setShuffle] = useState(false);
-  const [repeat, setRepeat] = useState('none'); // 'none', 'all', 'one'
+  const [volume, setVolume] = useState(1);
+  const [isShuffling, setIsShuffling] = useState(false);
+  const [repeatMode, setRepeatMode] = useState<'none' | 'all' | 'one'>('none');
+  
   const audioRef = useRef<HTMLAudioElement>(null);
   const currentTrack = tracks[currentTrackIndex];
-
-  const getNextTrackIndex = () => {
-    if (repeat === 'one') return currentTrackIndex;
-    if (shuffle) {
-      const nextIndex = Math.floor(Math.random() * tracks.length);
-      return nextIndex === currentTrackIndex ? (nextIndex + 1) % tracks.length : nextIndex;
-    }
-    return (currentTrackIndex + 1) % tracks.length;
-  };
-
-  const getPreviousTrackIndex = () => {
-    if (repeat === 'one') return currentTrackIndex;
-    if (shuffle) {
-      const prevIndex = Math.floor(Math.random() * tracks.length);
-      return prevIndex === currentTrackIndex ? (prevIndex - 1 + tracks.length) % tracks.length : prevIndex;
-    }
-    return (currentTrackIndex - 1 + tracks.length) % tracks.length;
-  };
-
-  const handleNext = () => {
-    const nextIndex = getNextTrackIndex();
-    setCurrentTrackIndex(nextIndex);
-    setCurrentTime(0);
-    if (isPlaying) {
-      setTimeout(() => audioRef.current?.play(), 0);
-    }
-  };
-
-  const handlePrevious = () => {
-    const prevIndex = getPreviousTrackIndex();
-    setCurrentTrackIndex(prevIndex);
-    setCurrentTime(0);
-    if (isPlaying) {
-      setTimeout(() => audioRef.current?.play(), 0);
-    }
-  };
-
-  const toggleShuffle = () => {
-    setShuffle(prev => !prev);
-  };
-
-  const toggleRepeat = () => {
-    setRepeat(current => {
-      switch (current) {
-        case 'none': return 'all';
-        case 'all': return 'one';
-        default: return 'none';
-      }
-    });
-  };
 
   useEffect(() => {
     const audio = audioRef.current;
     if (audio) {
       audio.volume = volume;
-
-      const handleTimeUpdate = () => {
-        setCurrentTime(audio.currentTime);
-      };
-
-      const handleLoadedMetadata = () => {
-        if (!isNaN(audio.duration)) {
-          setCurrentTime(0);
-        }
-      };
-
-      const handleEnded = () => {
-        if (repeat === 'one') {
-          audio.currentTime = 0;
-          audio.play();
-        } else if (repeat === 'all' || shuffle) {
-          handleNext();
-        } else {
-          if (currentTrackIndex === tracks.length - 1) {
-            setIsPlaying(false);
-            setCurrentTime(0);
-          } else {
-            handleNext();
-          }
-        }
-      };
-
-      const handleError = (error: Event) => {
-        console.error('Audio error:', (error.target as HTMLAudioElement).error);
-        setIsPlaying(false);
-      };
-
-      audio.addEventListener('timeupdate', handleTimeUpdate);
-      audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.addEventListener('ended', handleEnded);
-      audio.addEventListener('error', handleError);
-
+      audio.src = currentTrack.audioUrl;
+      audio.load(); // Explicitly load the audio
+      
       if (isPlaying) {
         const playPromise = audio.play();
         if (playPromise !== undefined) {
           playPromise.catch(error => {
-            console.error('Playback error:', error);
+            console.error('Error playing audio:', error);
             setIsPlaying(false);
           });
         }
       } else {
         audio.pause();
       }
+    }
+  }, [currentTrackIndex, isPlaying, volume, currentTrack.audioUrl]);
+
+  useEffect(() => {
+    if (audioRef.current) {
+      const audio = audioRef.current;
+      
+      const handleTimeUpdate = () => {
+        setCurrentTime(audio.currentTime);
+      };
+
+      const handleEnded = () => {
+        if (repeatMode === 'one') {
+          audio.currentTime = 0;
+          audio.play();
+        } else if (repeatMode === 'all') {
+          handleNext();
+        } else if (isShuffling) {
+          handleShuffle();
+        } else {
+          handleNext();
+        }
+      };
+
+      audio.addEventListener('timeupdate', handleTimeUpdate);
+      audio.addEventListener('ended', handleEnded);
 
       return () => {
         audio.removeEventListener('timeupdate', handleTimeUpdate);
-        audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
         audio.removeEventListener('ended', handleEnded);
-        audio.removeEventListener('error', handleError);
       };
     }
-  }, [currentTrackIndex, isPlaying, volume, repeat, shuffle]);
+  }, [currentTrackIndex, isShuffling, repeatMode]);
 
   const handlePlayPause = () => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.pause();
-      } else {
-        const playPromise = audioRef.current.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(error => {
-            console.error('Playback error:', error);
-            setIsPlaying(false);
-          });
-        }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleShuffle = () => {
+    let nextIndex;
+    do {
+      nextIndex = Math.floor(Math.random() * tracks.length);
+    } while (nextIndex === currentTrackIndex && tracks.length > 1);
+    
+    setCurrentTrackIndex(nextIndex);
+    setCurrentTime(0);
+    if (isPlaying && audioRef.current) {
+      audioRef.current.play();
+    }
+  };
+
+  const handleRepeat = () => {
+    setRepeatMode(current => {
+      switch (current) {
+        case 'none': return 'all';
+        case 'all': return 'one';
+        case 'one': return 'none';
       }
-      setIsPlaying(!isPlaying);
+    });
+  };
+
+  const handleNext = () => {
+    if (isShuffling) {
+      handleShuffle();
+    } else {
+      setCurrentTrackIndex(current => 
+        current === tracks.length - 1 ? (repeatMode === 'all' ? 0 : current) : current + 1
+      );
+      setCurrentTime(0);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (isShuffling) {
+      handleShuffle();
+    } else {
+      setCurrentTrackIndex(current => current === 0 ? tracks.length - 1 : current - 1);
+      setCurrentTime(0);
     }
   };
 
@@ -170,7 +141,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
     } else {
       setCurrentTrackIndex(index);
       setCurrentTime(0);
-      setIsPlaying(true);
+      if (!isPlaying) setIsPlaying(true);
     }
   };
 
@@ -210,57 +181,38 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
                 duration={currentTrack.duration}
                 onSeek={handleSeek}
               />
-              <div className="flex items-center justify-center gap-8 mb-6">
-                <button 
-                  onClick={toggleShuffle}
-                  className={`text-2xl transition-colors ${shuffle ? 'text-purple-500' : 'text-white/70 hover:text-white'}`}
-                >
-                  <i className="fas fa-random"></i>
-                </button>
-                <PlaybackControls 
-                  isPlaying={isPlaying}
-                  onPlayPause={handlePlayPause}
-                  onPrevious={handlePrevious}
-                  onNext={handleNext}
-                />
-                <button 
-                  onClick={toggleRepeat}
-                  className={`text-2xl transition-colors ${
-                    repeat !== 'none' ? 'text-purple-500' : 'text-white/70 hover:text-white'
-                  }`}
-                >
-                  {repeat === 'one' ? (
-                    <i className="fas fa-repeat-1"></i>
-                  ) : (
-                    <i className="fas fa-repeat"></i>
-                  )}
-                </button>
-              </div>
               <div className="flex flex-wrap items-center justify-between gap-4">
-                <div className="volume-control">
-                  <button
-                    onClick={() => handleVolumeChange(volume === 0 ? 1 : 0)}
-                    className="volume-icon"
+                <div className="flex items-center gap-4">
+                  <button 
+                    onClick={() => setIsShuffling(prev => !prev)}
+                    className={`p-2 rounded-full transition-all ${
+                      isShuffling ? 'text-purple-400 hover:text-purple-300' : 'text-white/70 hover:text-white'
+                    }`}
                   >
-                    {volume === 0 ? (
-                      <i className="fas fa-volume-mute"></i>
-                    ) : volume < 0.5 ? (
-                      <i className="fas fa-volume-down"></i>
-                    ) : (
-                      <i className="fas fa-volume-up"></i>
-                    )}
+                    <Shuffle size={20} />
                   </button>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={volume}
-                    onChange={(e) => handleVolumeChange(parseFloat(e.target.value))}
-                    className="volume-slider"
-                    style={{ '--volume-percentage': `${volume * 100}%` } as React.CSSProperties}
+                  
+                  <PlaybackControls 
+                    isPlaying={isPlaying}
+                    onPlayPause={handlePlayPause}
+                    onPrevious={handlePrevious}
+                    onNext={handleNext}
                   />
+                  
+                  <button 
+                    onClick={handleRepeat}
+                    className={`p-2 rounded-full transition-all ${
+                      repeatMode !== 'none' ? 'text-purple-400 hover:text-purple-300' : 'text-white/70 hover:text-white'
+                    }`}
+                  >
+                    {repeatMode === 'one' ? <RepeatOne size={20} /> : <Repeat size={20} />}
+                  </button>
                 </div>
+
+                <VolumeControl 
+                  volume={volume} 
+                  onVolumeChange={handleVolumeChange} 
+                />
               </div>
             </div>
           </div>
