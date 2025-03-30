@@ -1,0 +1,183 @@
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 9%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 92%;
+    --accent-foreground: 0 0% 9%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 0 0% 70%;
+
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 6%;
+    --foreground: 0 0% 98%;
+
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 12%;
+    --muted-foreground: 0 0% 63%;
+
+    --accent: 0 0% 16%;
+    --accent-foreground: 0 0% 98%;
+
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 20%;
+    --ring: 0 0% 28%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .page-container {
+    @apply max-w-3xl mx-auto px-4 sm:px-6 py-12 sm:py-20;
+  }
+}
+
+/* Additional animation classes */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Gradient hover effect for buttons */
+.gradient-hover {
+  background-size: 200% 200%;
+  background-position: 0% 0%;
+  transition: background-position 0.5s ease-out;
+}
+
+.gradient-hover:hover {
+  background-position: 100% 100%;
+}
+
+/* Custom cursor styles */
+.custom-cursor {
+  cursor: none !important;
+}
+
+.custom-cursor a,
+.custom-cursor button,
+.custom-cursor [role="button"],
+.custom-cursor input[type="submit"],
+.custom-cursor input[type="reset"],
+.custom-cursor input[type="button"] {
+  cursor: none !important;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 8px;
+  height: 8px;
+  background-color: hsl(var(--primary));
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  transition: width 0.2s, height 0.2s, background-color 0.2s;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 40px;
+  height: 40px;
+  border: 1px solid hsla(var(--primary), 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s, height 0.3s, border-color 0.3s, transform 0.1s;
+}
+
+.cursor-dot.cursor-pointer {
+  width: 12px;
+  height: 12px;
+  background-color: hsl(var(--primary));
+}
+
+.cursor-ring.cursor-pointer {
+  width: 30px;
+  height: 30px;
+  border-color: hsl(var(--primary));
+}
+
+.cursor-dot.cursor-clicked {
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.cursor-ring.cursor-clicked {
+  width: 25px;
+  height: 25px;
+  transform: translate(-50%, -50%) scale(0.8);
+}
+
+.cursor-hidden {
+  opacity: 0;
+}
+
+/* Hide custom cursor for mobile devices */
+@media (max-width: 768px) {
+  .cursor-dot, .cursor-ring {
+    display: none;
+  }
+}
