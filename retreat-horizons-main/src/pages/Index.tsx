@@ -14,7 +14,7 @@ const Index = () => {
   const [showMap, setShowMap] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col bg-[#9ACBD0]/15 bg-gradient-to-b from-[#9ACBD0]/30 via-white/50 to-earthy-light/50">
+    <div className="min-h-screen flex flex-col bg-[#9ACBD0]/15 bg-gradient-to-b from-[#9ACBD0]/30 via-[#79D7BE]/50 to-earthy-light/50">
       <NavBar />
       
       <main className="flex-grow">

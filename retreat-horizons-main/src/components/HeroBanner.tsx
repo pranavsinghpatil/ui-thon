@@ -6,13 +6,38 @@ const bannerImages = [{
   title: "Mountain Hideaway",
   description: "Breathtaking views and serene moments await you"
 }, {
-  url: "https://images.unsplash.com/photo-1500375592092-40eb2168fd21",
-  title: "Coastal Villa",
-  description: "Experience luxury where the ocean meets the sky"
+  url: "https://images.unsplash.com/photo-1449844908441-8829872d2607",
+  title: "Wood Villa",
+  description: "Forest life stays with a rural experience"
 }, {
   url: "https://images.unsplash.com/photo-1518005020951-eccb494ad742",
   title: "Desert Oasis",
   description: "Find peace in the beautiful solitude of nature"
+},
+{
+  url: "https://images.unsplash.com/photo-1484910292437-025e5d13ce87",
+  title: "Hiking",
+  description: "Explore the great outdoors and connect with nature"
+},
+{
+  url: "https://images.unsplash.com/photo-1505843513577-22bb7d21e455",
+  title: "Grand Mansion",
+  description: "Large space and comfort service"
+},
+{
+  url: "https://images.unsplash.com/photo-1564013799919-ab600027ffc6",
+  title: "ModernVille",
+  description: "Various Facilities and services"
+},
+{
+  url: "https://images.unsplash.com/photo-1605276373954-0c4a0dac5b12",
+  title: "Country Side",
+  description: "The perfect place for a peaceful retreat"
+},
+{
+  url: "https://images.unsplash.com/photo-1608429835892-30be51ea4d6c",
+  title: "Athlete club",
+  description: "Experience the sports and amenities of a world-class athlete"
 }];
 const HeroBanner = () => {
   const [currentIndex, setCurrentIndex] = useState(0);

@@ -35,7 +35,7 @@ const MapView = ({
           {/* Map background with proper styling */}
           <div className="absolute inset-0">
             <img
-              src="https://images.unsplash.com/photo-1501854140801-50d01698950b"
+              src="https://images.unsplash.com/photo-1569336415962-a4bd9f69cd83?q=80&w=3131&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Map background"
               className="w-full h-full object-cover"
             />
