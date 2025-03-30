@@ -45,9 +45,9 @@ const Projects = () => {
       title: "E-commerce Platform",
       description: "A full-featured online store built with React and Node.js with advanced product filtering and payment integration.",
       tags: ["React", "Node.js", "MongoDB", "Stripe"],
-      image: "project-1.jpg",
-      github: "https://github.com/username/project-1",
-      live: "https://project-1-demo.com",
+      image: "/images/projects/ecomm.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Web Development"
     },
     {
@@ -55,9 +55,9 @@ const Projects = () => {
       title: "Personal Finance Tracker",
       description: "An application to track expenses and visualize spending patterns with budget forecasting.",
       tags: ["React", "Firebase", "ChartJS", "Tailwind CSS"],
-      image: "project-2.jpg",
-      github: "https://github.com/username/project-2",
-      live: "https://project-2-demo.com",
+      image: "/images/projects/fintrack.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Web Development"
     },
     {
@@ -65,9 +65,9 @@ const Projects = () => {
       title: "Task Management App",
       description: "A collaborative task management tool with real-time updates and team progress analytics.",
       tags: ["Next.js", "GraphQL", "PostgreSQL", "Socket.io"],
-      image: "project-3.jpg",
-      github: "https://github.com/username/project-3",
-      live: "https://project-3-demo.com",
+      image: "/images/projects/task.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Web Development"
     },
     {
@@ -75,9 +75,9 @@ const Projects = () => {
       title: "Sentiment Analysis Tool",
       description: "NLP-powered application that analyzes sentiment in customer reviews and social media posts.",
       tags: ["Python", "TensorFlow", "NLTK", "Flask"],
-      image: "project-4.jpg",
-      github: "https://github.com/username/project-4",
-      live: "https://project-4-demo.com",
+      image: "/images/projects/sent.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "NLP"
     },
     {
@@ -85,9 +85,9 @@ const Projects = () => {
       title: "Social Media Analytics Dashboard",
       description: "An analytics dashboard for social media performance tracking with predictive engagement models.",
       tags: ["Vue.js", "Express", "Firebase", "Tailwind CSS"],
-      image: "project-5.jpg",
-      github: "https://github.com/username/project-5",
-      live: "https://project-5-demo.com",
+      image: "/images/projects/social.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Data Science"
     },
     {
@@ -95,9 +95,9 @@ const Projects = () => {
       title: "AI Content Generator",
       description: "A tool that leverages GPT models to create marketing content and articles based on brief inputs.",
       tags: ["Python", "TensorFlow", "React", "FastAPI"],
-      image: "project-6.jpg",
-      github: "https://github.com/username/project-6",
-      live: "https://project-6-demo.com",
+      image: "/images/projects/aigen.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "AI/ML"
     },
     {
@@ -105,9 +105,9 @@ const Projects = () => {
       title: "Decentralized Voting System",
       description: "A blockchain-based voting application ensuring transparency and security in electronic voting.",
       tags: ["Solidity", "Ethereum", "Web3.js", "React"],
-      image: "blockchain-voting.jpg",
-      github: "https://github.com/username/blockchain-voting",
-      live: "https://blockchain-voting-demo.com",
+      image: "/images/projects/dece.png",
+      github: "https://github.com/pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Blockchain"
     },
     {
@@ -115,9 +115,9 @@ const Projects = () => {
       title: "Image Recognition API",
       description: "A machine learning API that identifies objects and scenes in uploaded images with high accuracy.",
       tags: ["Python", "PyTorch", "Docker", "FastAPI"],
-      image: "image-recognition.jpg",
-      github: "https://github.com/username/image-recognition",
-      live: "https://image-recognition-demo.com",
+      image: "/images/projects/imageapi.png",
+      github: "https://github.com/pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "AI/ML"
     },
     {
@@ -125,9 +125,9 @@ const Projects = () => {
       title: "Smart Home IoT Controller",
       description: "A system for managing connected home devices with voice recognition and automated routines.",
       tags: ["React Native", "Node.js", "MongoDB", "MQTT"],
-      image: "smart-home.jpg",
-      github: "https://github.com/username/smart-home",
-      live: "https://smart-home-demo.com",
+      image: "/images/projects/iot.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Mobile Development"
     },
     {
@@ -135,9 +135,9 @@ const Projects = () => {
       title: "Language Translation Tool",
       description: "An NLP application that provides real-time translation between multiple languages with context awareness.",
       tags: ["Python", "Transformers", "Flask", "React"],
-      image: "translation-tool.jpg",
-      github: "https://github.com/username/translation-tool",
-      live: "https://translation-tool-demo.com",
+      image: "/images/projects/lang.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "NLP"
     },
     {
@@ -145,9 +145,9 @@ const Projects = () => {
       title: "Cryptocurrency Trading Bot",
       description: "An automated trading system that uses technical analysis and market sentiment to execute trades.",
       tags: ["Python", "TensorFlow", "APIs", "PostgreSQL"],
-      image: "crypto-bot.jpg",
-      github: "https://github.com/username/crypto-bot",
-      live: "https://crypto-bot-demo.com",
+      image: "/images/projects/blch.png",
+      github: "https://github.pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Blockchain"
     },
     {
@@ -155,9 +155,9 @@ const Projects = () => {
       title: "Predictive Maintenance System",
       description: "A machine learning solution that predicts equipment failures before they occur based on sensor data.",
       tags: ["Python", "Scikit-learn", "React", "Node.js"],
-      image: "predictive-maintenance.jpg",
-      github: "https://github.com/username/predictive-maintenance",
-      live: "https://predictive-maintenance-demo.com",
+      image: "/images/projects/predims.png",
+      github: "https://github.com/pranavsinghpatil/ui-thon",
+      live: "https://google.com",
       category: "Data Science"
     }
   ];

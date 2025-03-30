@@ -73,7 +73,7 @@ const Index = () => {
             Hello, my name is
           </span>
           <h1 className="text-4xl md:text-6xl font-bold leading-tight tracking-tighter mb-4">
-            <span className="text-primary">Developer Name</span>
+            <span className="text-primary">PranavSingh</span>
           </h1>
           <h2 className="text-3xl md:text-5xl font-bold text-muted-foreground leading-tight mb-6">
             I build things for the web & beyond.
