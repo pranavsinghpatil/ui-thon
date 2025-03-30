@@ -110,11 +110,11 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   };
 
   return (
-    <div className="relative w-full max-w-5xl mx-auto">
-      <div className={`w-full shadow-2xl rounded-2xl overflow-hidden ${isPlaying ? 'border-flow-animation' : ''}`}>
+    <div className="relative w-full max-w-5xl mx-auto p-1">
+      <div className={`w-full shadow-2xl rounded-2xl ${isPlaying ? 'border-flow-animation' : ''}`}>
         <div className="flex flex-col md:flex-row">
           {/* Left side - Player */}
-          <div className="md:w-2/3 p-6">
+          <div className="md:w-2/3 p-8">
             {/* Album cover and track info */}
             <div className="flex flex-col items-center">
               <AlbumCover track={currentTrack} size="lg" className="mb-6" />
