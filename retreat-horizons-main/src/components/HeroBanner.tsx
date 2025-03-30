@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
+import { ArrowDown } from "lucide-react";
 const bannerImages = [
   {
     url: "https://images.unsplash.com/photo-1501854140801-50d01698950b",
@@ -45,94 +43,69 @@ const bannerImages = [
     description: "Engage in world-class sports and enjoy top-notch facilities."
   }
 ];
-
 const HeroBanner = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const slides = bannerImages;
-
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [nextIndex, setNextIndex] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+  const current = bannerImages[currentIndex];
+  const next = bannerImages[nextIndex];
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((currentSlide + 1) % slides.length);
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [currentSlide, slides.length]);
+    const transitionTimer = setTimeout(() => {
+      setIsTransitioning(true);
+    }, 7000); // Start transition after 7 seconds
 
-  return (
-    <section className="relative h-[80vh] overflow-hidden">
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={currentSlide}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute inset-0"
-        >
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-            style={{ backgroundImage: `url(${slides[currentSlide].url})` }}
-          >
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-black/30" />
-          </div>
-        </motion.div>
-      </AnimatePresence>
+    const interval = setTimeout(() => {
+      setCurrentIndex(nextIndex);
+      setNextIndex((nextIndex + 1) % bannerImages.length);
+      setIsTransitioning(false);
+    }, 8000); // Complete transition after 8 seconds (1 second for transition itself)
 
-      <div className="relative h-full flex items-center">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.5 }}
-            className="max-w-2xl text-white"
-          >
-            <motion.h1 
-              className="text-5xl md:text-6xl font-bold mb-6 font-['Playfair_Display']"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              {slides[currentSlide].title}
-            </motion.h1>
-            <motion.p 
-              className="text-xl mb-8 text-gray-200"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              {slides[currentSlide].description}
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <Button
-                className="bg-white text-gray-900 hover:bg-gray-100 rounded-full px-8 py-6 text-lg font-semibold flex items-center gap-2 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
-                onClick={() => document.getElementById('listings')?.scrollIntoView({ behavior: 'smooth' })}
-              >
-                Explore Stays
-                <ArrowRight className="h-5 w-5" />
-              </Button>
-            </motion.div>
-          </motion.div>
-        </div>
+    return () => {
+      clearTimeout(interval);
+      clearTimeout(transitionTimer);
+    };
+  }, [currentIndex, nextIndex]);
+  const scrollToListings = () => {
+    const listingsSection = document.getElementById("listings");
+    if (listingsSection) {
+      listingsSection.scrollIntoView({
+        behavior: "smooth"
+      });
+    }
+  };
+  return <div className="relative h-[100vh] overflow-hidden w-full">
+      {/* Current image */}
+      <div className={`absolute inset-0 bg-cover bg-center animate-slow-zoom transition-opacity duration-1000 ${isTransitioning ? "opacity-0" : "opacity-100"}`} style={{
+      backgroundImage: `url(${current.url})`
+    }}>
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        {slides.map((_, index) => (
-          <motion.button
-            key={index}
-            className={`w-3 h-3 rounded-full transition-all duration-300 ${
-              index === currentSlide ? 'bg-white scale-125' : 'bg-white/50 hover:bg-white/70'
-            }`}
-            onClick={() => setCurrentSlide(index)}
-            whileHover={{ scale: 1.2 }}
-            whileTap={{ scale: 0.9 }}
-          />
-        ))}
+      {/* Next image (for transition) */}
+      <div className={`absolute inset-0 bg-cover bg-center animate-slow-zoom transition-opacity duration-1000 ${isTransitioning ? "opacity-100" : "opacity-0"}`} style={{
+      backgroundImage: `url(${next.url})`
+    }}>
+        <div className="absolute inset-0 bg-black/30" />
       </div>
-    </section>
-  );
+
+      {/* Content */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-white p-4">
+        <h1 className="text-4xl md:text-6xl font-bold mb-4 text-center max-w-4xl animate-fade-in">
+          {current.title}
+        </h1>
+        <p className="text-xl md:text-2xl mb-8 text-center max-w-2xl animate-fade-in">
+          {current.description}
+        </p>
+        <Button className="bg-earthy-brown hover:bg-earthy-dark text-white rounded-full px-8 py-6 text-lg font-semibold transition-transform hover:scale-105" onClick={scrollToListings}>
+          Explore Stays
+        </Button>
+      </div>
+
+      {/* Scroll indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white flex flex-col items-center animate-pulse-gentle">
+        
+        <ArrowDown size={24} />
+      </div>
+    </div>;
 };
-
 export default HeroBanner;

@@ -1,5 +1,5 @@
+
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Heart, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BookingConfirmation } from "./BookingConfirmation";
@@ -34,91 +34,65 @@ const ListingCard = ({ listing }: { listing: ListingProps }) => {
   };
 
   return (
-    <motion.div 
-      className="listing-card group h-full card-gradient bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
-      whileHover={{ 
-        y: -5,
-        transition: { duration: 0.2 }
-      }}
-    >
-      <div className="relative overflow-hidden">
-        <motion.img
+    <div className="listing-card group h-full card-gradient">
+      <div className="relative">
+        <img
           src={listing.imageUrl}
           alt={listing.title}
-          className="listing-image h-64 w-full object-cover transform"
-          whileHover={{ 
-            scale: 1.05,
-            transition: { duration: 0.4 }
-          }}
-        />
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileHover={{ opacity: 1 }}
-          className="absolute inset-0 bg-black/20 transition-opacity"
+          className="listing-image h-64 w-full object-cover"
         />
         <Button
           variant="ghost"
           size="icon"
-          className="absolute top-2 right-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white transform transition-all duration-300 hover:scale-110"
+          className="absolute top-2 right-2 rounded-full bg-white/80 backdrop-blur-sm hover:bg-white"
           onClick={toggleLike}
         >
           <Heart
-            className={`h-5 w-5 transform transition-all duration-300 ${
-              isLiked ? "fill-red-500 text-red-500 scale-110" : "text-gray-600"
+            className={`h-5 w-5 ${
+              isLiked ? "fill-red-500 text-red-500" : "text-gray-700"
             }`}
           />
         </Button>
-        <div className="absolute top-2 left-2 bg-white/80 backdrop-blur-sm px-2 py-1 rounded-full flex items-center gap-1">
-          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-          <span className="text-sm font-medium">{listing.rating}</span>
+        <div className="availability bg-gradient-to-r from-earthy-light to-white backdrop-blur-sm">
+          {listing.availability}
         </div>
       </div>
-      
-      <motion.div 
-        className="p-4"
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.2 }}
-      >
-        <h3 className="text-lg font-semibold mb-2 text-gray-900 group-hover:text-earthy-dark transition-colors">
-          {listing.title}
-        </h3>
-        <p className="text-sm text-gray-600 mb-2">{listing.location}</p>
-        <div className="flex flex-wrap gap-2 mb-3">
-          {listing.tags.map((tag) => (
+      <div className="p-4">
+        <div className="flex justify-between items-start">
+          <h3 className="text-lg font-semibold font-['Cormorant_Garamond'] mb-1">{listing.title}</h3>
+          <div className="flex items-center gap-1 text-sm">
+            <Star className="h-4 w-4 fill-earthy-gold text-earthy-gold" />
+            <span>{listing.rating}</span>
+          </div>
+        </div>
+        <p className="text-sm text-muted-foreground mb-2 font-['Montserrat']">{listing.location}</p>
+        <div className="flex flex-wrap gap-1 mb-3">
+          {listing.tags.map((tag, index) => (
             <span
-              key={tag}
-              className="text-xs px-2 py-1 rounded-full bg-earthy-light/20 text-earthy-dark"
+              key={index}
+              className="text-xs px-2 py-1 bg-gradient-to-r from-earthy-light to-white rounded-full font-['Montserrat']"
             >
               {tag}
             </span>
           ))}
         </div>
-        <p className="text-sm text-gray-700 mb-4">{listing.description}</p>
+        <p className="text-sm line-clamp-2 mb-4 font-['Montserrat']">{listing.description}</p>
         <div className="flex items-center justify-between">
-          <div>
-            <span className="text-2xl font-bold text-earthy-dark">${listing.price}</span>
-            <span className="text-sm text-gray-600">/night</span>
-          </div>
-          <Button
+          <p className="font-semibold">
+            <span className="text-lg font-['Playfair_Display']">${listing.price}</span>{" "}
+            <span className="text-sm text-muted-foreground font-['Montserrat']">/ night</span>
+          </p>
+          <Button 
+            className="button-gradient text-white rounded-full transition-all duration-300 hover:scale-105 font-['Montserrat']"
             onClick={handleBook}
-            className="bg-gradient-to-r from-earthy-brown to-earthy-dark hover:from-earthy-dark hover:to-earthy-brown text-white rounded-full px-6 py-2 transform transition-all duration-300 hover:scale-105 hover:shadow-lg"
           >
             Book Now
           </Button>
         </div>
-      </motion.div>
-      
-      {showConfirmation && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -20 }}
-        >
-          <BookingConfirmation listingTitle={listing.title} />
-        </motion.div>
-      )}
-    </motion.div>
+      </div>
+
+      {showConfirmation && <BookingConfirmation listingTitle={listing.title} />}
+    </div>
   );
 };
 

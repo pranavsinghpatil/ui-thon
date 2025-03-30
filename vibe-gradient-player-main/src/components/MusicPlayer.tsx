@@ -1,5 +1,4 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Track } from '@/data/sampleTracks';
 import AlbumCover from './AlbumCover';
 import PlaybackControls from './PlaybackControls';
@@ -17,59 +16,76 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(0.7);
-  
+  const audioRef = useRef<HTMLAudioElement>(null);
   const currentTrack = tracks[currentTrackIndex];
-  
-  // In a real implementation, we would have an audio element
-  // Since we don't have real audio files, we'll simulate playback
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  
+
   useEffect(() => {
-    if (isPlaying) {
-      intervalRef.current = setInterval(() => {
-        setCurrentTime((prevTime) => {
-          if (prevTime >= currentTrack.duration) {
-            handleNext();
-            return 0;
-          }
-          return prevTime + 1;
-        });
-      }, 1000);
-    } else if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
-    
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+    if (audioRef.current) {
+      audioRef.current.volume = volume;
+      audioRef.current.src = currentTrack.audioUrl;
+      
+      if (isPlaying) {
+        audioRef.current.play();
+      } else {
+        audioRef.current.pause();
       }
-    };
-  }, [isPlaying, currentTrackIndex]);
-  
+    }
+  }, [currentTrackIndex, isPlaying, volume]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.addEventListener('timeupdate', () => {
+        setCurrentTime(audio.currentTime);
+      });
+
+      audio.addEventListener('ended', () => {
+        handleNext();
+      });
+
+      audio.addEventListener('error', (error) => {
+        console.error('Audio playback error:', error);
+      });
+
+      return () => {
+        audio.removeEventListener('timeupdate', () => {});
+        audio.removeEventListener('ended', () => {});
+        audio.removeEventListener('error', () => {});
+      };
+    }
+  }, []);
+
   const handlePlayPause = () => {
     setIsPlaying(!isPlaying);
   };
-  
+
   const handlePrevious = () => {
     setCurrentTrackIndex((prevIndex) => 
       prevIndex === 0 ? tracks.length - 1 : prevIndex - 1
     );
     setCurrentTime(0);
+    if (!isPlaying) setIsPlaying(true);
   };
-  
+
   const handleNext = () => {
     setCurrentTrackIndex((prevIndex) => 
       prevIndex === tracks.length - 1 ? 0 : prevIndex + 1
     );
     setCurrentTime(0);
+    if (!isPlaying) setIsPlaying(true);
   };
-  
+
   const handleSeek = (time: number) => {
-    setCurrentTime(time);
+    if (audioRef.current) {
+      audioRef.current.currentTime = time;
+    }
   };
-  
+
   const handleVolumeChange = (newVolume: number) => {
     setVolume(newVolume);
+    if (audioRef.current) {
+      audioRef.current.volume = newVolume;
+    }
   };
 
   const handleTrackSelect = (index: number) => {
@@ -81,7 +97,7 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
       if (!isPlaying) setIsPlaying(true);
     }
   };
-  
+
   return (
     <div className={`w-full max-w-5xl mx-auto music-player-bg rounded-xl shadow-2xl backdrop-blur-lg relative z-10 ${isPlaying ? 'border-flow-animation' : ''}`}>
       <div className="flex flex-col md:flex-row">
@@ -95,32 +111,33 @@ const MusicPlayer = ({ tracks }: MusicPlayerProps) => {
               <h2 className="text-2xl font-bold mb-1 truncate font-gradient">{currentTrack.title}</h2>
               <p className="text-white/70 text-lg">{currentTrack.artist}</p>
             </div>
-          
-            {/* Controls */}
-            <div className="w-full space-y-5">
-              <ProgressBar 
-                currentTime={currentTime} 
-                duration={currentTrack.duration}
-                onSeek={handleSeek}
+          </div>
+          <audio
+            ref={audioRef}
+            src={currentTrack.audioUrl}
+            preload="auto"
+            className="hidden"
+          />
+          <div className="w-full space-y-5">
+            <ProgressBar 
+              currentTime={currentTime} 
+              duration={currentTrack.duration}
+              onSeek={handleSeek}
+            />
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <PlaybackControls 
+                isPlaying={isPlaying}
+                onPlayPause={handlePlayPause}
+                onPrevious={handlePrevious}
+                onNext={handleNext}
               />
-              
-              <div className="flex flex-wrap items-center justify-between gap-4">
-                <PlaybackControls 
-                  isPlaying={isPlaying}
-                  onPlayPause={handlePlayPause}
-                  onPrevious={handlePrevious}
-                  onNext={handleNext}
-                />
-                
-                <VolumeControl 
-                  volume={volume} 
-                  onVolumeChange={handleVolumeChange} 
-                />
-              </div>
+              <VolumeControl 
+                volume={volume} 
+                onVolumeChange={handleVolumeChange} 
+              />
             </div>
           </div>
         </div>
-        
         {/* Right side - Playlist */}
         <div className="md:w-1/3 p-6 border-l border-white/10">
           <div className="mb-4">
