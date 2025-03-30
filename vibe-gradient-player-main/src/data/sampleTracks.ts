@@ -15,6 +15,15 @@ const getAudioUrl = (fileName: string): string => {
 export const sampleTracks: Track[] = [
   {
     id: "1",
+    title: "Flute Music",
+    artist: "Nature Recordings",
+    album: "Serene Landscapes",
+    coverUrl: "https://images.unsplash.com/photo-1439902315629-cd882022cea0",
+    audioUrl: getAudioUrl("Flute Music.mp3"),
+    duration: 151
+  },
+  {
+    id: "2",
     title: "Hang Drums",
     artist: "Synth Wave",
     album: "Synth Vibes",
@@ -23,7 +32,7 @@ export const sampleTracks: Track[] = [
     duration: 139
   },
   {
-    id: "2",
+    id: "3",
     title: "Make Me Move",
     artist: "Culture Code",
     album: "NCS",
@@ -32,7 +41,7 @@ export const sampleTracks: Track[] = [
     duration: 196
   },
   {
-    id: "3",
+    id: "4",
     title: "On & On",
     artist: "Cartoon, jeja",
     album: "NoCopyrightSounds",
@@ -41,7 +50,7 @@ export const sampleTracks: Track[] = [
     duration: 208
   },
   {
-    id: "4",
+    id: "5",
     title: "Liquid Time",
     artist: "Akash Gandhi",
     album: "Free Chill out",
@@ -50,7 +59,7 @@ export const sampleTracks: Track[] = [
     duration: 171
   },
   {
-    id: "5",
+    id: "6",
     title: "Feel Good",
     artist: "Syn Cole",
     album: "NoCopyrightSounds",
@@ -59,21 +68,13 @@ export const sampleTracks: Track[] = [
     duration: 182
   },
   {
-    id: "6",
+    id: "7",
     title: "Glitch Hop",
     artist: "Tech Beats",
     album: "Future Sounds",
-    coverUrl: "https://images.unsplash.com/photo-1515405295579-b74c76bbcdfd",
+    coverUrl: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     audioUrl: getAudioUrl("Glitch Hop.mp3"),
     duration: 273
   },
-  {
-    id: "7",
-    title: "Flute Music",
-    artist: "Nature Recordings",
-    album: "Serene Landscapes",
-    coverUrl: "https://images.unsplash.com/photo-1439902315629-cd882022cea0",
-    audioUrl: getAudioUrl("Flute Music.mp3"),
-    duration: 151
-  }
+  
 ];

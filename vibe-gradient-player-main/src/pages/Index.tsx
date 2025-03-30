@@ -13,11 +13,32 @@ const Index = () => {
       <h1 className="text-4xl md:text-5xl font-bold text-white mb-8 text-center relative z-10 tracking-tight">
         <span className="font-gradient">Gradient Vibe Player</span>
       </h1>
-      
+
       <MusicPlayer tracks={sampleTracks} />
-      
+
       <div className="mt-10 text-white/50 text-sm text-center">
-        <p>This is a demo music player. Audio playback is simulated.</p>
+        <p>&copy; {new Date().getFullYear()} PranavSingh. All rights reserved.</p>
+        <div className="flex justify-center space-x-4 mt-2">
+          {/* GitHub Icon */}
+          <a
+            href="https://github.com/pranavsinghpatil"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
+            <i className="fab fa-github text-lg"></i> {/* Font Awesome GitHub Icon */}
+          </a>
+
+          {/* Twitter Icon */}
+          <a
+            href="https://twitter.com/pranavenv"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-white"
+          >
+            <i className="fab fa-twitter text-lg"></i> {/* Font Awesome Twitter Icon */}
+          </a>
+        </div>
       </div>
     </div>
   );
