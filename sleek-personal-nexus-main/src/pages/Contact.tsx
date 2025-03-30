@@ -100,38 +100,38 @@ const Contact = () => {
             <h2 className="text-xl font-medium mb-3">Connect</h2>
             <div className="space-y-4">
               <a 
-                href="mailto:hello@example.com"
+                href="mailto:puneet.pranav04@gmail.com"
                 className="flex items-center hover:text-primary transition-colors"
               >
                 <Mail className="mr-3 h-5 w-5" />
-                hello@example.com
+                puneet.pranav04@gmail.com
               </a>
               <a 
-                href="https://github.com/yourusername" 
+                href="https://github.com/pranavsinghpatil" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center hover:text-primary transition-colors"
               >
                 <Github className="mr-3 h-5 w-5" />
-                github.com/yourusername
+                github.com/pranavsinghpatil
               </a>
               <a 
-                href="https://linkedin.com/in/yourusername" 
+                href="https://linkedin.com/in/pranavsinghpatil" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center hover:text-primary transition-colors"
               >
                 <Linkedin className="mr-3 h-5 w-5" />
-                linkedin.com/in/yourusername
+                linkedin.com/in/pranavsinghpatil
               </a>
               <a 
-                href="https://twitter.com/yourusername" 
+                href="https://twitter.com/syntaxnomad" 
                 target="_blank" 
                 rel="noopener noreferrer"
                 className="flex items-center hover:text-primary transition-colors"
               >
                 <Twitter className="mr-3 h-5 w-5" />
-                @yourusername
+                @syntaxnomad
               </a>
             </div>
           </div>
@@ -139,7 +139,7 @@ const Contact = () => {
           <div>
             <h2 className="text-xl font-medium mb-3">Location</h2>
             <p className="text-muted-foreground">
-              Currently based in San Francisco, California. Available for remote work worldwide.
+              Currently based in Pune, India. Available for remote work worldwide.
             </p>
           </div>
         </div>

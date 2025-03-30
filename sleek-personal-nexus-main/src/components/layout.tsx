@@ -51,7 +51,7 @@ export function Layout({ children }: PropsWithChildren) {
       </motion.main>
       <footer className="py-8 border-t">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} PranavSingh. All rights reserved.
+          © {new Date().getFullYear()} PranavSingh. All rights reserved. (this is a sample portfolio website UI)
         </div>
       </footer>
     </div>

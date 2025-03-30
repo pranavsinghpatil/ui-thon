@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, ChevronRight, Github, Mail, ExternalLink } from "lucide-react";
@@ -43,9 +42,9 @@ const Index = () => {
       title: "E-commerce Platform",
       description: "A full-featured online store built with React and Node.js with advanced product filtering and payment integration.",
       tags: ["React", "Node.js", "MongoDB", "Stripe"],
-      image: "project-1.jpg",
-      github: "https://github.com/username/project-1",
-      live: "https://project-1-demo.com",
+      image: "/images/projects/ecomm.png",
+      github: "https://github.com/pranavsingh/ui-thon",
+      live: "https://google.com",
       category: "Web Development"
     },
     {
@@ -53,9 +52,9 @@ const Index = () => {
       title: "AI Content Generator",
       description: "A tool that leverages GPT models to create marketing content and articles based on brief inputs.",
       tags: ["Python", "TensorFlow", "React", "FastAPI"],
-      image: "project-6.jpg",
-      github: "https://github.com/username/project-6",
-      live: "https://project-6-demo.com",
+      image: "/images/projects/aigen.png",
+      github: "https://github.com/pranavsingh/ui-thon",
+      live: "https://google.com",
       category: "AI/ML"
     }
   ];
@@ -84,8 +83,8 @@ const Index = () => {
           className="mt-4 text-lg text-muted-foreground max-w-2xl mb-8"
           variants={itemVariants}
         >
-          I'm a versatile developer with expertise spanning web development, 
-          artificial intelligence, blockchain, and data science. My passion lies in 
+          I'm a versatile developer with expertise spanning artificial intelligence,  
+          web development, blockchain, and data science. My passion lies in 
           creating innovative solutions that bridge cutting-edge technology with 
           intuitive user experiences.
         </motion.p>
@@ -101,7 +100,7 @@ const Index = () => {
             </Link>
           </Button>
           <Button variant="outline" size="lg" asChild>
-            <a href="https://github.com/username" target="_blank" rel="noopener noreferrer">
+            <a href="https://github.com/pranavsingh" target="_blank" rel="noopener noreferrer">
               <Github className="mr-2 h-4 w-4" />
               GitHub
             </a>
