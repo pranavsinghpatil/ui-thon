@@ -19,11 +19,11 @@ const MusicIconsAnimation = () => {
 
   // Define the icons we'll use
   const iconComponents = [
-    <Music size={12} />,
-    <Headphones size={12} />,
-    <Play size={12} />,
-    <Volume2 size={12} />,
-    <Disc size={12} />
+    <Music size={15} />,
+    <Headphones size={15} />,
+    <Play size={15} />,
+    <Volume2 size={15} />,
+    <Disc size={15} />
   ];
 
   const getRandomColor = () => {
