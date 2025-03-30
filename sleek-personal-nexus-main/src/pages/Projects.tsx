@@ -309,6 +309,11 @@ const Projects = () => {
               className="group border rounded-lg overflow-hidden hover:border-primary transition-all duration-300 flex flex-col h-full"
             >
               <div className="aspect-video bg-secondary relative overflow-hidden">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="space-x-4">
                     <a 
@@ -392,6 +397,11 @@ const Projects = () => {
               className="group border rounded-lg overflow-hidden hover:border-primary transition-all duration-300 flex flex-col md:flex-row"
             >
               <div className="w-full md:w-1/3 aspect-video md:aspect-auto bg-secondary relative">
+                <img
+                  src={project.image}
+                  alt={project.title}
+                  className="w-full h-full object-cover"
+                />
                 <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                   <div className="space-x-4">
                     <a 

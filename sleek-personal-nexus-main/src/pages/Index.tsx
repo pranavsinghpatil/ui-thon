@@ -164,6 +164,11 @@ const Index = () => {
                 className="border rounded-lg overflow-hidden hover:border-primary transition-all duration-300 group h-full flex flex-col"
               >
                 <div className="aspect-video bg-secondary relative overflow-hidden">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <div className="space-x-4">
                       <a 
